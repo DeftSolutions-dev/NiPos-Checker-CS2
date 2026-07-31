@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="NiposChecker.Views.UserBannedWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Блокировка" Height="400" Width="600" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="#00FFFFFF" xmlns:views="clr-namespace:NiposChecker.Views;assembly=NiposChecker">
+  <Border CornerRadius="16" Background="#151516" Margin="20" BorderBrush="{DynamicResource Brush_Brand}" BorderThickness="2">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <TextBlock Name="BannedHeader" Grid.Row="0" Text="⛔ ВАШЕ УСТРОЙСТВО ЗАБЛОКИРОВАНО" Foreground="{DynamicResource Brush_Brand}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,30,0,10" />
+      <Separator Grid.Row="1" Height="1" Background="#FF242427" Margin="40,0,40,0" />
+      <TextBlock Name="BanReason" Grid.Row="2" Text="Причина блокировки неизвестна." Foreground="{StaticResource Brush_TextMain}" FontSize="14" HorizontalAlignment="Center" Margin="40,20,40,0" TextWrapping="Wrap" />
+      <StackPanel Name="BanDetails" Grid.Row="3" Orientation="Vertical" Margin="40,10,40,0">
+        <TextBlock Name="BanDate" Foreground="{StaticResource Brush_TextDim}" FontSize="13" />
+        <TextBlock Name="BanEndDate" Foreground="{StaticResource Brush_TextDim}" FontSize="13" />
+        <TextBlock Name="BanIssuedBy" Foreground="{StaticResource Brush_TextDim}" FontSize="13" />
+      </StackPanel>
+      <TextBlock Name="TimerText" Grid.Row="5" Text="Окно закроется через 4..." Foreground="{StaticResource Brush_TextDim}" FontSize="12" HorizontalAlignment="Center" Margin="0,0,0,20" />
+    </Grid>
+  </Border>
+</Window>

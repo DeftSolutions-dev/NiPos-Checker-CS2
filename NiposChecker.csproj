@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>NiposChecker</AssemblyName>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>12.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <RootNamespace />
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+  </PropertyGroup>
+
+  <!-- Embedded assets: images, fonts, sounds -->
+  <ItemGroup>
+    <Resource Include="assets\**\*" />
+  </ItemGroup>
+
+  <!-- Third-party DLL references -->
+  <ItemGroup>
+    <Reference Include="InputSimulatorStandard">
+      <HintPath>..\NIPOS_CHECKER\InputSimulatorStandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\NIPOS_CHECKER\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscordRPC">
+      <HintPath>..\NIPOS_CHECKER\DiscordRPC.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinMM">
+      <HintPath>..\NIPOS_CHECKER\NAudio.WinMM.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\NIPOS_CHECKER\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Core">
+      <HintPath>..\NIPOS_CHECKER\NAudio.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Interop">
+      <HintPath>..\NIPOS_CHECKER\Esent.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Steamworks.NET">
+      <HintPath>..\NIPOS_CHECKER\Steamworks.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess.ServiceController">
+      <HintPath>..\NIPOS_CHECKER\System.ServiceProcess.ServiceController.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management">
+      <HintPath>..\NIPOS_CHECKER\System.Management.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

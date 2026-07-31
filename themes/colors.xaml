@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="Font_Sans">pack://application:,,,/Assets/fonts/#IBM Plex Sans</FontFamily>
+  <FontFamily x:Key="Font_Mono">pack://application:,,,/Assets/fonts/#IBM Plex Mono</FontFamily>
+  <FontFamily x:Key="Font_Montserrat">pack://application:,,,/Assets/fonts/#IBM Plex Sans</FontFamily>
+  <FontFamily x:Key="Font_Motiva">pack://application:,,,/Assets/fonts/#IBM Plex Sans</FontFamily>
+  <Color x:Key="Clr_Ink">#FF0A0A0B</Color>
+  <Color x:Key="Clr_Rail">#FF0C0C0D</Color>
+  <Color x:Key="Clr_Panel">#FF151516</Color>
+  <Color x:Key="Clr_Panel2">#FF1D1D1F</Color>
+  <Color x:Key="Clr_Line">#FF242427</Color>
+  <Color x:Key="Clr_Line2">#FF37373C</Color>
+  <Color x:Key="Clr_Text">#FFECECEE</Color>
+  <Color x:Key="Clr_Dim">#FF93939A</Color>
+  <Color x:Key="Clr_Faint">#FF56565E</Color>
+  <Color x:Key="Clr_Brand">#FFFF283F</Color>
+  <Color x:Key="Clr_BrandSoft">#FFE4383F</Color>
+  <Color x:Key="Clr_BrandHover">#FFFF3F53</Color>
+  <Color x:Key="Clr_BrandDeep">#FF8C1826</Color>
+  <Color x:Key="Clr_BrandDeep2">#FF160D12</Color>
+  <Color x:Key="Clr_BrandGlow">#FF1B0D12</Color>
+  <Color x:Key="Clr_BrandTag">#FFFF8086</Color>
+  <Color x:Key="Clr_BrandFill">#26FF283F</Color>
+  <Color x:Key="Clr_BrandFillSoft">#1FFF283F</Color>
+  <Color x:Key="Clr_BrandFillFaint">#1AFF283F</Color>
+  <Color x:Key="Clr_BrandFillDim">#14FF283F</Color>
+  <Color x:Key="Clr_BrandLine">#66FF283F</Color>
+  <Color x:Key="Clr_BrandLineSoft">#59FF283F</Color>
+  <Color x:Key="Clr_BrandLineHard">#80FF283F</Color>
+  <Color x:Key="Clr_BrandText">#FFFFFFFF</Color>
+  <Color x:Key="Clr_Gold">#FFF4CA80</Color>
+  <Color x:Key="Clr_Amber">#FFF0A93C</Color>
+  <Color x:Key="Clr_Mint">#FF34D399</Color>
+  <SolidColorBrush x:Key="Brush_Ink" Color="{StaticResource Clr_Ink}" />
+  <SolidColorBrush x:Key="Brush_Rail" Color="{StaticResource Clr_Rail}" />
+  <SolidColorBrush x:Key="Brush_Panel2" Color="{StaticResource Clr_Panel2}" />
+  <SolidColorBrush x:Key="Brush_Line" Color="{StaticResource Clr_Line}" />
+  <SolidColorBrush x:Key="Brush_Line2" Color="{StaticResource Clr_Line2}" />
+  <SolidColorBrush x:Key="Brush_Text" Color="{StaticResource Clr_Text}" />
+  <SolidColorBrush x:Key="Brush_Dim" Color="{StaticResource Clr_Dim}" />
+  <SolidColorBrush x:Key="Brush_Faint" Color="{StaticResource Clr_Faint}" />
+  <SolidColorBrush x:Key="Brush_Brand" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_BrandSoft" Color="{DynamicResource Clr_BrandSoft}" />
+  <SolidColorBrush x:Key="Brush_BrandHover" Color="{DynamicResource Clr_BrandHover}" />
+  <SolidColorBrush x:Key="Brush_Gold" Color="{StaticResource Clr_Gold}" />
+  <SolidColorBrush x:Key="Brush_Amber" Color="{StaticResource Clr_Amber}" />
+  <SolidColorBrush x:Key="Brush_Mint" Color="{StaticResource Clr_Mint}" />
+  <SolidColorBrush x:Key="Brush_BrandFill" Color="{DynamicResource Clr_BrandFill}" />
+  <SolidColorBrush x:Key="Brush_MintFill" Color="#1F34D399" />
+  <SolidColorBrush x:Key="Brush_AmberFill" Color="#24F0A93C" />
+  <SolidColorBrush x:Key="Brush_BrandTag" Color="{DynamicResource Clr_BrandTag}" />
+  <SolidColorBrush x:Key="Brush_MintTag" Color="#FF5FE0B4" />
+  <SolidColorBrush x:Key="Brush_AmberTag" Color="#FFF5BE6B" />
+  <SolidColorBrush x:Key="Brush_BrandFillSoft" Color="{DynamicResource Clr_BrandFillSoft}" />
+  <SolidColorBrush x:Key="Brush_BrandFillFaint" Color="{DynamicResource Clr_BrandFillFaint}" />
+  <SolidColorBrush x:Key="Brush_BrandFillDim" Color="{DynamicResource Clr_BrandFillDim}" />
+  <SolidColorBrush x:Key="Brush_BrandLine" Color="{DynamicResource Clr_BrandLine}" />
+  <SolidColorBrush x:Key="Brush_BrandLineSoft" Color="{DynamicResource Clr_BrandLineSoft}" />
+  <SolidColorBrush x:Key="Brush_BrandLineHard" Color="{DynamicResource Clr_BrandLineHard}" />
+  <SolidColorBrush x:Key="Brush_BrandText" Color="{DynamicResource Clr_BrandText}" />
+  <SolidColorBrush x:Key="Brush_TextMain" Color="{StaticResource Clr_Text}" />
+  <SolidColorBrush x:Key="Brush_TextBright" Color="{StaticResource Clr_Text}" />
+  <SolidColorBrush x:Key="Brush_TextDim" Color="{StaticResource Clr_Dim}" />
+  <SolidColorBrush x:Key="Brush_TextMenu" Color="{StaticResource Clr_Dim}" />
+  <SolidColorBrush x:Key="Brush_Neon" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_NeonBlue" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_BlueGlow" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_BlueBtn" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_Green" Color="{StaticResource Clr_Mint}" />
+  <SolidColorBrush x:Key="Brush_Red" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_RedBright" Color="{DynamicResource Clr_Brand}" />
+  <SolidColorBrush x:Key="Brush_Card" Color="{StaticResource Clr_Panel}" />
+  <SolidColorBrush x:Key="Brush_CardHover" Color="{StaticResource Clr_Panel2}" />
+  <SolidColorBrush x:Key="Brush_Panel" Color="{StaticResource Clr_Panel}" />
+  <SolidColorBrush x:Key="Brush_Sidebar" Color="{StaticResource Clr_Rail}" />
+  <SolidColorBrush x:Key="Brush_Footer" Color="{StaticResource Clr_Faint}" />
+  <SolidColorBrush x:Key="Brush_FooterBright" Color="{StaticResource Clr_Dim}" />
+  <SolidColorBrush x:Key="Brush_Border" Color="{StaticResource Clr_Line}" />
+  <SolidColorBrush x:Key="Brush_BorderBlue" Color="{StaticResource Clr_Line2}" />
+  <RadialGradientBrush x:Key="Brush_WindowBg" GradientOrigin="0.8,-0.08" Center="0.8,-0.08" RadiusX="0.95" RadiusY="0.8">
+    <GradientStop Color="{DynamicResource Clr_BrandGlow}" Offset="0" />
+    <GradientStop Offset="0.55" Color="{StaticResource Clr_Ink}" />
+    <GradientStop Offset="1" Color="{StaticResource Clr_Ink}" />
+  </RadialGradientBrush>
+  <LinearGradientBrush x:Key="Brush_MenuActive" StartPoint="0,0.5" EndPoint="1,0.5">
+    <GradientStop Color="{DynamicResource Clr_BrandFillSoft}" Offset="0" />
+    <GradientStop Offset="1" Color="{StaticResource Clr_Panel2}" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="Brush_BlueButton" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="0" />
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="1" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="Brush_GreenButton" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="0" />
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="1" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="Brush_RedButton" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="0" />
+    <GradientStop Color="{DynamicResource Clr_Brand}" Offset="1" />
+  </LinearGradientBrush>
+</ResourceDictionary>

@@ -1,0 +1,1904 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="NiposChecker.Views.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="NIPOS CHECKER" Height="760" Width="1289" MinHeight="600" MinWidth="1040" WindowStyle="None" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Background="#00FFFFFF" AllowsTransparency="True" xmlns:views="clr-namespace:NiposChecker.Views;assembly=NiposChecker" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+  <Border Name="RootBorder" BorderThickness="1" CornerRadius="14" BorderBrush="{StaticResource Brush_Line}" Background="{StaticResource Brush_WindowBg}" SizeChanged="RootBorder_SizeChanged">
+    <Grid>
+      <FrameworkElement.LayoutTransform>
+        <ScaleTransform x:Name="ZoomScale" ScaleX="1" ScaleY="1" />
+      </FrameworkElement.LayoutTransform>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="270" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" Background="{StaticResource Brush_Rail}" BorderThickness="0,0,1,0" BorderBrush="{StaticResource Brush_Line}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <Border Grid.Row="0" Padding="20,22,20,20" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Brush_Line}">
+            <Grid>
+              <Image Name="ProjectLogo" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" MaxHeight="52" HorizontalAlignment="Center" />
+              <Grid Name="LogoSpinner" Width="40" Height="40" HorizontalAlignment="Center" Visibility="Collapsed">
+                <Ellipse Width="40" Height="40" Stroke="{StaticResource Brush_Line2}" StrokeThickness="3.5" />
+                <Ellipse Width="40" Height="40" Stroke="{StaticResource Brush_Brand}" StrokeThickness="3.5" StrokeDashArray="10 100" StrokeDashCap="Round" RenderTransformOrigin="0.5,0.5">
+                  <UIElement.RenderTransform>
+                    <RotateTransform Angle="0" />
+                  </UIElement.RenderTransform>
+                  <FrameworkElement.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                      <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                          <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:0.9" />
+                        </Storyboard>
+                      </BeginStoryboard>
+                    </EventTrigger>
+                  </FrameworkElement.Triggers>
+                </Ellipse>
+              </Grid>
+            </Grid>
+          </Border>
+          <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="12,16,12,16">
+            <StackPanel>
+              <Grid Margin="10,0,10,9">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="ПРОВЕРКА" FontFamily="{StaticResource Font_Mono}" FontSize="9.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                <Border Grid.Column="1" Height="1" Margin="9,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+              </Grid>
+              <RadioButton Style="{StaticResource MenuButton}" IsChecked="True" Tag="Search" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="01" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Search" Grid.Column="1" Text="Поиск файлов" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="USB" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="02" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_USB" Grid.Column="1" Text="USB Устройства" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="LastActivity" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="03" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_LastActivity" Grid.Column="1" Text="Последняя активность" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Software" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="04" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Software" Grid.Column="1" Text="Программы" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Registry" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="05" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Registry" Grid.Column="1" Text="Реестр ПК" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Accounts" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="06" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Steam" Grid.Column="1" Text="STEAM Аккаунты" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <Grid Margin="10,20,10,9">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="ДОПОЛНИТЕЛЬНО" FontFamily="{StaticResource Font_Mono}" FontSize="9.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                <Border Grid.Column="1" Height="1" Margin="9,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+              </Grid>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Traces" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="·" FontFamily="{StaticResource Font_Mono}" FontSize="12" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Traces" Grid.Column="1" Text="Следы / Антиобход" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Processes" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="·" FontFamily="{StaticResource Font_Mono}" FontSize="12" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Processes" Grid.Column="1" Text="Процессы / Инъекции" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="System" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="·" FontFamily="{StaticResource Font_Mono}" FontSize="12" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Other" Grid.Column="1" Text="Другое" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+              <RadioButton Style="{StaticResource MenuButton}" Tag="Renames" Checked="MenuTab_Checked">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="·" FontFamily="{StaticResource Font_Mono}" FontSize="12" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  <TextBlock Name="MenuText_Renames" Grid.Column="1" Text="Переименованные файлы" VerticalAlignment="Center" />
+                </Grid>
+              </RadioButton>
+            </StackPanel>
+          </ScrollViewer>
+          <Border Name="BannerPanel" Grid.Row="2" Visibility="Collapsed" Margin="14,4,14,10" CornerRadius="10" ClipToBounds="True" Cursor="Hand" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}" MouseLeftButtonDown="Banner_Click">
+            <Grid>
+              <Image Name="BannerImage" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" />
+              <StackPanel VerticalAlignment="Bottom" Margin="10,8">
+                <TextBlock Name="BannerTextTop" FontSize="11" FontWeight="SemiBold" Foreground="#FFFFFFFF" TextWrapping="Wrap" />
+                <TextBlock Name="BannerTextLink" FontSize="10" Foreground="{StaticResource Brush_Brand}" />
+              </StackPanel>
+            </Grid>
+          </Border>
+          <Border Grid.Row="3" Padding="18,14,18,16" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Brush_Line}">
+            <StackPanel>
+              <Grid Margin="0,4">
+                <TextBlock Text="Сессия" FontSize="11.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                <TextBlock Name="SessionClock" Text="00:00:00" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Dim}" HorizontalAlignment="Right" />
+              </Grid>
+              <Grid Margin="0,4">
+                <TextBlock Text="Профиль" FontSize="11.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                <TextBlock Text="Полная проверка" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Dim}" HorizontalAlignment="Right" />
+              </Grid>
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+      <Grid Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="44" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="32" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Brush_Line}">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,6,0">
+            <TextBlock Name="TabTitle" Text="Поиск файлов" Visibility="Collapsed" />
+            <Button Style="{StaticResource WindowIconButton}" ToolTip="Уменьшить (Ctrl -)" Click="ZoomOut_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Ellipse Canvas.Left="4" Canvas.Top="4" Width="13" Height="13" StrokeThickness="1.7" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                  <Path Data="M20,20 L16.5,16.5 M7.5,10.5 L13.5,10.5" StrokeThickness="1.7" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Style="{StaticResource WindowIconButton}" ToolTip="Увеличить (Ctrl +)" Click="ZoomIn_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Ellipse Canvas.Left="4" Canvas.Top="4" Width="13" Height="13" StrokeThickness="1.7" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                  <Path Data="M20,20 L16.5,16.5 M7.5,10.5 L13.5,10.5 M10.5,7.5 L10.5,13.5" StrokeThickness="1.7" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Style="{StaticResource WindowIconButton}" ToolTip="Сбросить масштаб (Ctrl 0)" Click="ZoomReset_Click">
+              <Viewbox Width="15" Height="15">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M20,7 A8,8 0 1 0 20.5,14M20,7 L20,3 M20,7 L16,7" StrokeThickness="1.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Border Width="1" Height="16" Background="{StaticResource Brush_Line}" Margin="8,0" />
+            <Button Name="BtnSound" Style="{StaticResource WindowIconButton}" ToolTip="Звук интерфейса вкл/выкл" Click="ToggleSound_Click">
+              <Viewbox Name="SoundIcon" Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M11,5 L6,9 L3,9 L3,15 L6,15 L11,19 M15.5,8.5 A5,5 0 0 1 15.5,15.5" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Name="BtnNotif" Style="{StaticResource WindowIconButton}" ToolTip="Уведомления" Click="OpenNotifications_Click">
+              <Grid>
+                <Viewbox Width="16" Height="16">
+                  <Canvas Width="24" Height="24">
+                    <Path Data="M18,8 A6,6 0 1 0 6,8C6,15 3,16 3,16 L21,16 C21,16 18,15 18,8 M13.7,21 A2,2 0 0 1 10.299999999999999,21" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                  </Canvas>
+                </Viewbox>
+                <Ellipse Name="NotificationRedDot" Width="6" Height="6" Fill="{StaticResource Brush_Brand}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,3,4,0" Visibility="Collapsed">
+                  <UIElement.Effect>
+                    <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="6" ShadowDepth="0" Opacity="1" />
+                  </UIElement.Effect>
+                </Ellipse>
+              </Grid>
+            </Button>
+            <Button Name="BtnSettings" Style="{StaticResource WindowIconButton}" ToolTip="Настройки" Click="Settings_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Ellipse Canvas.Left="9" Canvas.Top="9" Width="6" Height="6" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                  <Path Data="M19.4,15 A1.6,1.6 0 0 0 19.7,16.8L19.8,16.900000000000002 A2,2 0 1 1 17,19.700000000000003L16.9,19.6 A1.6,1.6 0 0 0 14.2,20.700000000000003L14.2,21 A2,2 0 1 1 10.2,21L10.2,20.9 A1.6,1.6 0 0 0 7.9,19L7.800000000000001,19.1 A2,2 0 1 1 5,16.3L5.1,16.2 A1.6,1.6 0 0 0 3.9999999999999996,13.5L3,13.5 A2,2 0 1 1 3,9.5L3.1,9.5 A1.6,1.6 0 0 0 5,7.9L4.9,7.8 A2,2 0 1 1 7.7,5L7.8,5.1 A1.6,1.6 0 0 0 10.5,3.9999999999999996L10.5,3 A2,2 0 1 1 14.5,3L14.5,3.1 A1.6,1.6 0 0 0 17.2,4.2L17.3,4.1000000000000005 A2,2 0 1 1 20.1,7L20,7.1 A1.6,1.6 0 0 0 21.1,9.8L21,9.8 A2,2 0 1 1 21,13.8L20.9,13.8 A1.6,1.6 0 0 0 19.4,15" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Name="BtnLanguage" Style="{StaticResource WindowIconButton}" ToolTip="Язык" Click="Language_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M4,5 L14,5 M9,3 L9,5 C9,10 6,13 3,14 M6,9 C6,12 9,15 13,16 M20,20 L24,11 L28,20 M14.5,17 L19.5,17" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Name="BtnReport" Style="{StaticResource WindowIconButton}" ToolTip="Отправить отчёт админу" Click="SendReport_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M12,16 L12,4 M8,8 L12,4 L16,8 M5,15 L5,18 A2,2 0 0 0 7,20L17,20 A2,2 0 0 0 19,18L19,15" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Name="BtnHistory" Style="{StaticResource WindowIconButton}" ToolTip="Прошлые проверки этого аккаунта" Click="History_Click">
+              <Viewbox Width="16" Height="16">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M12,21 A9,9 0 1 0 3.5,9M3,4 L3,8 L7,8 M12,7 L12,12 L15.5,14" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Border Width="1" Height="16" Background="{StaticResource Brush_Line}" Margin="8,0" />
+            <Button Style="{StaticResource WindowIconButton}" ToolTip="Свернуть" Click="Minimize_Click">
+              <Viewbox Width="14" Height="14">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M5,12 L19,12" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Name="MaxRestoreBtn" Style="{StaticResource WindowIconButton}" ToolTip="Развернуть" Click="MaxRestore_Click">
+              <Viewbox Width="12" Height="12">
+                <Canvas Width="24" Height="24">
+                  <Path Name="MaxRestorePath" Data="M5,5 L19,5 L19,19 L5,19" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+            <Button Style="{StaticResource WindowCloseButton}" ToolTip="Закрыть" Margin="0,0,2,0" Click="ExitBtn_Click">
+              <Viewbox Width="14" Height="14">
+                <Canvas Width="24" Height="24">
+                  <Path Data="M6,6 L18,18 M18,6 L6,18" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+          </StackPanel>
+        </Border>
+        <Grid Row="1" Margin="30,24,30,22">
+          <Grid Name="Tab_Search" Visibility="Visible">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,18">
+              <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ЭТАП 01 · ПОИСК ФАЙЛОВ" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="Поиск файлов" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Сканирование дисков по сигнатурам, хешам и характерным путям. Игрок видит тот же результат, что и администратор." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Style="{StaticResource GhostBtn}" Margin="0,0,9,0" Click="SelectSearchFolders_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M3,7 A2,2 0 0 1 5,5L9,5 L11,7 L19,7 A2,2 0 0 1 21,9L21,17 A2,2 0 0 1 19,19L5,19 A2,2 0 0 1 3,17" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_SelectFolders" Text="Выбрать папки" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+                <Button Name="StartSearchBtn" Style="{StaticResource PrimaryBtn}" Click="StartSearch_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Ellipse Canvas.Left="4" Canvas.Top="4" Width="14" Height="14" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.7" />
+                        <Path Data="M20,20 L16.4,16.4" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.7" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_StartSearch" Text="Начать поиск" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+                <Button Name="StopSearchBtn" Style="{StaticResource DangerBtn}" Visibility="Collapsed" Margin="9,0,0,0" Click="StopSearch_Click">
+                  <TextBlock Name="BtnText_Stop" Text="Стоп" VerticalAlignment="Center" />
+                </Button>
+              </StackPanel>
+            </Grid>
+            <Border Name="VerdictBorder" Grid.Row="1" Margin="0,0,0,18" CornerRadius="12" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}" ClipToBounds="True">
+              <Grid>
+                <Grid Margin="20,16">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Border Name="VerdictLamp" Grid.Column="0" Width="42" Height="42" CornerRadius="11" Margin="0,0,20,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <Viewbox Width="19" Height="19">
+                      <Canvas Width="24" Height="24">
+                        <Path Name="VerdictLampPath" Data="M21,12 A9,9 0 1 1 3,12A9,9 0 1 1 21,12M12,8 L12,13 M12,16 L12.01,16" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                      </Canvas>
+                    </Viewbox>
+                  </Border>
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Name="VerdictTitle" Text="Проверка не запускалась" FontFamily="{StaticResource Font_Sans}" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                    <TextBlock Name="VerdictSub" Text="Выберите папки или запустите поиск по всем дискам" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,7,0,0" TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock Name="VerdictNum" Text="—" FontFamily="{StaticResource Font_Sans}" FontSize="34" FontWeight="Bold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Right" />
+                    <TextBlock Name="VerdictCap" Text="СОВПАДЕНИЙ" FontFamily="{StaticResource Font_Mono}" FontSize="9.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Right" Margin="0,6,0,0" />
+                  </StackPanel>
+                </Grid>
+                <ProgressBar Name="VerdictBar" VerticalAlignment="Bottom" Height="2" Visibility="Collapsed" IsIndeterminate="False" Foreground="#F0A93C" Background="#00FFFFFF" BorderThickness="0" />
+              </Grid>
+            </Border>
+            <Grid Row="2" Margin="0,0,0,16">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Border Width="300" CornerRadius="10" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                  <Grid>
+                    <Viewbox Width="14" Height="14" HorizontalAlignment="Left" Margin="12,0,0,0">
+                      <Canvas Width="24" Height="24">
+                        <Ellipse Canvas.Left="4" Canvas.Top="4" Width="14" Height="14" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.7" />
+                        <Path Data="M20,20 L16.4,16.4" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.7" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBox Style="{StaticResource SearchBox}" BorderThickness="0" Background="#00FFFFFF" Padding="34,0,12,0" />
+                  </Grid>
+                </Border>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Name="SearchTimer2" Text="00:00:00" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Dim}" FontSize="11" Margin="0,0,14,0" VerticalAlignment="Center" />
+                <TextBlock Name="SearchCount2" Text="0 записей" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Faint}" FontSize="11" VerticalAlignment="Center" />
+              </StackPanel>
+            </Grid>
+            <Grid Row="3">
+              <Border CornerRadius="12" ClipToBounds="True" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}" Background="{StaticResource Brush_Panel}">
+                <UIElement.Effect>
+                  <BlurEffect x:Name="SearchBlur" Radius="0" />
+                </UIElement.Effect>
+                <DataGrid Name="SearchResultsGrid" Style="{StaticResource DarkDataGrid}" HorizontalScrollBarVisibility="Auto" MouseDoubleClick="SearchResult_DoubleClick">
+                  <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="4" MinWidth="0" CanUserResize="False" CanUserReorder="False" CanUserSort="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{Binding SeverityBar}" />
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Grid />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="SCol_Name" Header="ФАЙЛ" Width="200">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" Source="{Binding FileIcon}" />
+                            <TextBlock VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="{Binding Name}" />
+                          </StackPanel>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="SCol_Cheat" Header="ЧИТ" Width="120" Binding="{Binding CheatName}" />
+                    <DataGridTextColumn x:Name="SCol_Type" Header="ТИП" Width="60" Binding="{Binding Type}" />
+                    <DataGridTextColumn x:Name="SCol_Size" Header="РАЗМЕР" Width="90" Binding="{Binding Weight}" />
+                    <DataGridTextColumn x:Name="SCol_Mod" Header="ИЗМЕНЁН" Width="130" Binding="{Binding LastChange}" />
+                    <DataGridTextColumn x:Name="SCol_Acc" Header="ДОСТУП" Width="0" Visibility="Collapsed" Binding="{Binding LastAccess}" />
+                    <DataGridTextColumn x:Name="SCol_Path" Header="ПУТЬ" Width="*" Binding="{Binding Path}" />
+                    <DataGridTemplateColumn x:Name="SCol_Verdict" Header="РИСК" Width="140" CanUserSort="False">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Border CornerRadius="5" Padding="9,3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{Binding SeverityFill}">
+                            <TextBlock FontFamily="{StaticResource Font_Mono}" FontSize="10" FontWeight="Medium" Text="{Binding SeverityLabel}" Foreground="{Binding SeverityBrush}" />
+                          </Border>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+              <Grid Name="SearchOverlay" Background="{StaticResource Brush_Panel}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="420">
+                  <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <Viewbox Width="24" Height="24">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M3,7 A2,2 0 0 1 5,5L9,5 L11,7 L19,7 A2,2 0 0 1 21,9L21,17 A2,2 0 0 1 19,19L5,19 A2,2 0 0 1 3,17M9,13 L15,13" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                  </Border>
+                  <TextBlock Text="Здесь появятся найденные файлы" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                  <TextBlock Text="По умолчанию проверяются системный диск, папки загрузок и временные каталоги. Добавьте свои папки, если нужно расширить область." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                  <Border HorizontalAlignment="Center" Margin="0,16,0,0" CornerRadius="7" Padding="12,7" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <TextBlock Text="2–5 МИНУТ · НЕ ЗАКРЫВАЙТЕ ОКНО" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" />
+                  </Border>
+                </StackPanel>
+              </Grid>
+            </Grid>
+            <Border Name="SearchToolbar" Grid.Row="0" Visibility="Collapsed" Height="0">
+              <StackPanel>
+                <Button Name="StartSearchBtn2" Click="StartSearch_Click">
+                  <TextBlock Name="BtnText_Search" Text="Поиск" />
+                </Button>
+                <TextBlock Name="BtnText_Folders" Text="Папки" />
+              </StackPanel>
+            </Border>
+          </Grid>
+          <Grid Name="Tab_Accounts" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,18">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ЭТАП 06 · STEAM" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Name="SteamText_CurrentAccount" Text="Steam-аккаунты" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Аккаунты, которые заходили с этого компьютера. Проверяются по базе блокировок проекта и VAC." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Style="{StaticResource GhostBtn}" Margin="0,0,9,0" Click="ExportAccounts_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M9,9 L20,9 L20,20 L9,20 M5,15 L5,6 A2,2 0 0 1 7,4L15,4" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_ExportAccounts" Text="Экспорт аккаунтов" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+                <Button Style="{StaticResource PrimaryBtn}" Click="CheckBlockDB_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M12,3 L20,6 L20,12 C20,17 16.5,20 12,21 C7.5,20 4,17 4,12 L4,6 M9,12 L11,14 L15,10" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="Проверить через BlockDB" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+              </StackPanel>
+            </Grid>
+            <Border Name="SteamVerdict" Grid.Row="1" Visibility="Collapsed" Margin="0,0,0,18" CornerRadius="12" Padding="20,16" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{DynamicResource Brush_BrandLine}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Width="42" Height="42" CornerRadius="11" Margin="0,0,20,0" Background="{DynamicResource Brush_BrandFillFaint}" BorderThickness="1" BorderBrush="{DynamicResource Brush_BrandLineHard}">
+                  <Viewbox Width="19" Height="19">
+                    <Canvas Width="24" Height="24">
+                      <Path Data="M12,3 L3,20 L21,20 M12,10 L12,14 M12,17 L12.01,17" Stroke="{StaticResource Brush_Brand}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                    </Canvas>
+                  </Viewbox>
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Text="Найден аккаунт с баном проекта" FontFamily="{StaticResource Font_Sans}" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                  <TextBlock Name="SteamVerdictSub" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,7,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                  <TextBlock Name="SteamVerdictNum" Text="0" FontFamily="{StaticResource Font_Sans}" FontSize="34" FontWeight="Bold" Foreground="{StaticResource Brush_Brand}" HorizontalAlignment="Right" />
+                  <TextBlock Name="SteamVerdictCap" Text="ИЗ 0" FontFamily="{StaticResource Font_Mono}" FontSize="9.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Right" Margin="0,6,0,0" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Grid Row="2">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MaxWidth="440" />
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="3*" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                <Grid Margin="0,0,0,12">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Текущий аккаунт" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                  <Border Grid.Column="1" Height="1" Margin="11,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                </Grid>
+                <Border CornerRadius="12" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                  <StackPanel>
+                    <Border Padding="18" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Brush_Line}">
+                      <StackPanel Orientation="Horizontal">
+                        <Border Width="62" Height="62" CornerRadius="11" ClipToBounds="True" Margin="0,0,14,0" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                          <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.38" Center="0.5,0.38" RadiusX="0.7" RadiusY="0.7">
+                              <GradientStop Color="{DynamicResource Clr_BrandDeep}" Offset="0" />
+                              <GradientStop Color="{DynamicResource Clr_BrandDeep2}" Offset="1" />
+                            </RadialGradientBrush>
+                          </Border.Background>
+                          <Image Name="CurrentAvatar" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" />
+                        </Border>
+                        <StackPanel VerticalAlignment="Center" MinWidth="0">
+                          <StackPanel Orientation="Horizontal">
+                            <TextBlock Name="CurrentNickname" FontFamily="{StaticResource Font_Sans}" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" Text="—" VerticalAlignment="Center" />
+                            <Border CornerRadius="5" Padding="8,3" Margin="9,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_BrandFill}">
+                              <FrameworkElement.Style>
+                                <Style TargetType="{x:Type Border}">
+                                  <Setter Property="Visibility" Value="Visible" />
+                                  <Style.Triggers>
+                                    <DataTrigger Value="" Binding="{Binding Text, ElementName=CurrentProjectBan}">
+                                      <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </FrameworkElement.Style>
+                              <TextBlock Name="CurrentProjectBan" FontFamily="{StaticResource Font_Mono}" FontSize="10" FontWeight="Medium" Foreground="{StaticResource Brush_BrandTag}" />
+                            </Border>
+                          </StackPanel>
+                          <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
+                            <TextBlock Name="CurrentSteamId" FontSize="11" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Dim}" Text="—" Cursor="Hand" MouseLeftButtonDown="CopyCurrentSteamId_Click" />
+                            <Viewbox Width="12" Height="12" Margin="7,0,0,0" Cursor="Hand">
+                              <Canvas Width="24" Height="24">
+                                <Path Data="M9,9 L20,9 L20,20 L9,20 M5,15 L5,6 A2,2 0 0 1 7,4L15,4" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.8" StrokeLineJoin="Round" />
+                              </Canvas>
+                            </Viewbox>
+                          </StackPanel>
+                          <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Border CornerRadius="5" Padding="8,3" Margin="0,0,6,0" Background="{StaticResource Brush_MintFill}">
+                              <TextBlock Name="CurrentVac" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_MintTag}" />
+                            </Border>
+                            <Border CornerRadius="5" Padding="8,3" Background="{StaticResource Brush_Panel2}">
+                              <TextBlock Name="CurrentProfileType" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" />
+                            </Border>
+                          </StackPanel>
+                        </StackPanel>
+                      </StackPanel>
+                    </Border>
+                    <StackPanel Margin="18,6,18,14">
+                      <Border Padding="0,9" BorderThickness="0,0,0,1" BorderBrush="#B3242427">
+                        <Grid>
+                          <TextBlock Text="IP-адрес" FontSize="12.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Name="CurrentIp" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                            <Image Name="FlagImage" Width="18" Height="12" Margin="7,0,0,0" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" Visibility="Collapsed" />
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                      <Border Padding="0,9" BorderThickness="0,0,0,1" BorderBrush="#B3242427">
+                        <Grid>
+                          <TextBlock Text="Настоящее имя" FontSize="12.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                          <TextBlock Name="CurrentRealName" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Foreground="{StaticResource Brush_Dim}" HorizontalAlignment="Right" />
+                        </Grid>
+                      </Border>
+                      <Border Padding="0,9" BorderThickness="0,0,0,1" BorderBrush="#B3242427">
+                        <Grid>
+                          <TextBlock Text="Игра куплена" FontSize="12.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                          <TextBlock Name="CurrentCs2Date" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Foreground="{StaticResource Brush_Dim}" HorizontalAlignment="Right" />
+                        </Grid>
+                      </Border>
+                      <Border Padding="0,9">
+                        <Grid>
+                          <TextBlock Text="Регистрация" FontSize="12.5" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Left" />
+                          <TextBlock Name="CurrentRegDate" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Foreground="{StaticResource Brush_Dim}" HorizontalAlignment="Right" />
+                        </Grid>
+                      </Border>
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
+                <Button Style="{StaticResource GhostBtn}" HorizontalAlignment="Stretch" Margin="0,10,0,0" Click="CheckBlockDB_Click">
+                  <TextBlock Name="BtnText_CheckBlockDB" Text="Проверить аккаунты через BlockDB" VerticalAlignment="Center" />
+                </Button>
+                <Button Style="{StaticResource GhostBtn}" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="CheckBlockIP_Click">
+                  <TextBlock Name="BtnText_CheckBlockIP" Text="Проверить IP через BlockDB" VerticalAlignment="Center" />
+                </Button>
+              </StackPanel>
+              <Grid Column="2">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Row="0" Margin="0,0,0,12">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Name="SteamText_OtherAccounts" Grid.Column="0" Text="Другие аккаунты на этом ПК" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                  <Border Grid.Column="1" Height="1" Margin="11,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                </Grid>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                  <ItemsControl Name="OtherAccountsList">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border Margin="0,0,0,8" CornerRadius="12" Padding="13,12" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="*" />
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Width="44" Height="44" CornerRadius="10" ClipToBounds="True" Margin="0,0,13,0" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                              <Border.Background>
+                                <RadialGradientBrush GradientOrigin="0.5,0.38" Center="0.5,0.38" RadiusX="0.7" RadiusY="0.7">
+                                  <GradientStop Color="{DynamicResource Clr_BrandDeep}" Offset="0" />
+                                  <GradientStop Color="{DynamicResource Clr_BrandDeep2}" Offset="1" />
+                                </RadialGradientBrush>
+                              </Border.Background>
+                              <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Avatar, Converter={StaticResource Base64ImageConverter}}" />
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                              <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="{StaticResource Font_Sans}" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" Text="{Binding Nickname}" />
+                                <TextBlock FontFamily="{StaticResource Font_Mono}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource Brush_BrandTag}" VerticalAlignment="Center" Margin="8,0,0,0" Text="{Binding ProjectBanBadge}" />
+                              </StackPanel>
+                              <TextBlock FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Dim}" Margin="0,5,0,0" Text="{Binding SteamID64}" />
+                              <TextBlock FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,5,0,0" Text="{Binding LastActivityFormatted, StringFormat=Последний вход: {0}}" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="10,0,12,0" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Dim}" Text="{Binding VacFormatted}" />
+                            <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                              <TextBlock FontFamily="{StaticResource Font_Sans}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{StaticResource Brush_Text}" Text="{Binding Lvl}" />
+                              <TextBlock Text="УРОВЕНЬ" FontFamily="{StaticResource Font_Mono}" FontSize="8" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                            </StackPanel>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </ScrollViewer>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid Name="Tab_Software" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="0,0,0,18">
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                  <UIElement.Effect>
+                    <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                  </UIElement.Effect>
+                </Ellipse>
+                <TextBlock Text="ЭТАП 04 · ПРОГРАММЫ" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="Программы" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+              <TextBlock Text="Внешние утилиты для ручной проверки. Открывайте по указанию администратора." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="640" Margin="0,8,0,0" />
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="26" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                  <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_FileAnalysis" Grid.Column="0" Text="Файлы и директории" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                    <TextBlock Grid.Column="2" Text="8" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  </Grid>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_Everything_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="01" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Ellipse Canvas.Left="4" Canvas.Top="4" Width="14" Height="14" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" />
+                            <Path Data="M20,20 L16.4,16.4" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Everything" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Мгновенный поиск по именам файлов на всех дисках" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_ShellbagAnalyzer_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="02" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,7 A2,2 0 0 1 5,5L9,5 L11,7 L19,7 A2,2 0 0 1 21,9L21,17 A2,2 0 0 1 19,19L5,19 A2,2 0 0 1 3,17" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Shellbag Analyzer" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Папки, которые открывали в проводнике, включая удалённые" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_OpenedFiles_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="03" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M14,3 L7,3 A2,2 0 0 0 5,5L5,19 A2,2 0 0 0 7,21L17,21 A2,2 0 0 0 19,19L19,8 M14,3 L14,8 L19,8" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Открытые файлы" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Файлы, открытые процессами прямо сейчас" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_UserAssist_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="04" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Ellipse Canvas.Left="8.6" Canvas.Top="4.6" Width="6.8" Height="6.8" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" />
+                            <Path Data="M5,20 A7,7 0 0 1 19,20" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="История запусков" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Что запускали и сколько раз — по счётчикам Windows" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_ExecutedPrograms_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="05" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,4 L21,4 L21,20 L3,20 M8,9 L16,9 M8,13 L13,13" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Запускавшиеся программы" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Полная история запуска программ" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_LastActivityView_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="06" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" />
+                            <Path Data="M12,7 L12,12 L15,14" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Лента активности" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Сводная лента действий за выбранный период" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_JumpListsView_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="07" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,12 L7,12 L9.5,6 L13.5,18 L16,12 L21,12" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Недавние файлы" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Недавние файлы из панели задач" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_ShellBagsView_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="08" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,7 A2,2 0 0 1 5,5L9,5 L11,7 L19,7 A2,2 0 0 1 21,9L21,17 A2,2 0 0 1 19,19L5,19 A2,2 0 0 1 3,17M9,13 L15,13" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Открытые папки" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="История навигации по папкам с датами" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                  <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_BrowserAnalysis" Grid.Column="0" Text="Браузеры" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                    <TextBlock Grid.Column="2" Text="2" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  </Grid>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_BrowsingHistory_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="09" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" />
+                            <Path Data="M3,12 L21,12 M12,3 A14,14 0 0 1 12,21M12,3 A14,14 0 0 0 12,21" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="История браузеров" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="История посещений всех браузеров" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_BrowserDownloads_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="10" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M12,3 L12,15 M8,11 L12,15 L16,11 M4,17 L4,19 A2,2 0 0 0 6,21L18,21 A2,2 0 0 0 20,19L20,17" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Загрузки браузеров" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Что скачивали и откуда, включая удалённое" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Grid Margin="0,26,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_GameAnalysis" Grid.Column="0" Text="Процесс игры" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                    <TextBlock Grid.Column="2" Text="1" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  </Grid>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_SystemInformer_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="11" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,4 L21,4 L21,17 L3,17 M8,21 L16,21 M12,17 L12,21" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="System Informer" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Процессы, модули и дескрипторы игры" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                  <Grid Margin="0,26,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_RegistryAnalysis" Grid.Column="0" Text="Реестр" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                    <TextBlock Grid.Column="2" Text="1" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                  </Grid>
+                  <Button Style="{StaticResource ProgramButton}" Click="Open_RegistryFinder_Click">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="12" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" TextAlignment="Right" />
+                      <Border Grid.Column="1" Width="32" Height="32" CornerRadius="8" Margin="12,0,12,0" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                        <Viewbox Width="15" Height="15">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,5 L21,5 L21,11 L3,11 M3,13 L21,13 L21,19 L3,19 M7,8 L7.01,8 M7,16 L7.01,16" Stroke="{StaticResource Brush_Dim}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                      </Border>
+                      <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Registry Finder" FontSize="13" FontWeight="Medium" Foreground="{StaticResource Brush_Text}" />
+                        <TextBlock Text="Поиск по веткам реестра, включая скрытые ключи" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </ScrollViewer>
+          </Grid>
+          <Grid Name="Tab_Traces" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,16">
+              <StackPanel HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="СЛЕДЫ · АНТИОБХОД" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="Следы / Антиобход" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Признаки того, что перед проверкой заметали следы: массовая очистка системных кэшей запуска, временных файлов и корзины, отключение системных журналов или защиты, недавняя перезагрузка." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="640" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button Name="AdminReloadBtn" Style="{StaticResource GhostBtn}" Padding="14,0" Margin="0,0,9,0" Visibility="Collapsed" Click="RelaunchAsAdmin_Click">
+                  <TextBlock Name="AdminReloadText" Text="Запустить от админа" VerticalAlignment="Center" />
+                </Button>
+                <Button Style="{StaticResource PrimaryBtn}" Padding="18,0" Click="StartTraces_Click">
+                  <TextBlock Name="BtnText_Traces" Text="Проверить" VerticalAlignment="Center" />
+                </Button>
+              </StackPanel>
+            </Grid>
+            <Border Name="TracesSummary" Grid.Row="1" Visibility="Collapsed" Margin="0,0,0,14" CornerRadius="12" Padding="18,14" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                  <TextBlock Name="TracesSummaryTitle" FontFamily="{StaticResource Font_Sans}" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                  <TextBlock Name="TracesSummarySub" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,6,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Name="TracesSummaryNum" Text="0" FontFamily="{StaticResource Font_Sans}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Right" />
+                  <TextBlock Text="СИГНАЛОВ" FontFamily="{StaticResource Font_Mono}" FontSize="9" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Right" Margin="0,4,0,0" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Grid.Row="2" CornerRadius="12" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}" ClipToBounds="True">
+              <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14">
+                  <ItemsControl Name="TracesList">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border Margin="0,0,0,10" CornerRadius="10" Padding="14" Background="{StaticResource Brush_Panel2}" BorderThickness="3,1,1,1" BorderBrush="{Binding BarBrush}">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*" />
+                              <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                              <TextBlock FontFamily="{StaticResource Font_Sans}" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" TextWrapping="Wrap" Text="{Binding Title}" />
+                              <TextBlock FontSize="12" Foreground="{StaticResource Brush_Dim}" TextWrapping="Wrap" Margin="0,5,10,0" LineHeight="17" Text="{Binding Detail}" />
+                              <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Button Style="{StaticResource GhostBtn}" HorizontalAlignment="Left" Height="30" Padding="13,0" Visibility="{Binding DetailsVisibility}" Click="TraceDetails_Click">
+                                  <TextBlock Text="Показать список" VerticalAlignment="Center" FontSize="12" />
+                                </Button>
+                                <Button Style="{StaticResource PrimaryBtn}" HorizontalAlignment="Left" Height="30" Padding="13,0" Margin="8,0,0,0" Visibility="{Binding RepairVisibility}" Click="TraceRepair_Click">
+                                  <TextBlock Text="Восстановить учёт" VerticalAlignment="Center" FontSize="12" />
+                                </Button>
+                              </StackPanel>
+                            </StackPanel>
+                            <Border Grid.Column="1" CornerRadius="5" Padding="9,4" VerticalAlignment="Top" Background="{Binding TagFill}">
+                              <TextBlock FontFamily="{StaticResource Font_Mono}" FontSize="10" FontWeight="Medium" Text="{Binding TagText}" Foreground="{Binding TagBrush}" />
+                            </Border>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </ScrollViewer>
+                <Grid Name="TracesOverlay" Background="{StaticResource Brush_Panel}">
+                  <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="420">
+                    <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                      <Viewbox Width="24" Height="24">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M12,3 L20,6 L20,12 C20,17 16.5,20 12,21 C7.5,20 4,17 4,12 L4,6" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeLineJoin="Round" />
+                          <Path Data="M9,12 L11,14 L15,10" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                        </Canvas>
+                      </Viewbox>
+                    </Border>
+                    <TextBlock Name="TracesOverlayTitle" Text="Проверка не запускалась" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Нажмите «Проверить», чтобы собрать признаки уборки следов на этом ПК." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                  </StackPanel>
+                </Grid>
+              </Grid>
+            </Border>
+          </Grid>
+          <Grid Name="Tab_Processes" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,16">
+              <StackPanel HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ПАМЯТЬ · ПРОЦЕССЫ" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="Процессы / Инъекции" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Живой скан процессов и модулей, загруженных в cs2. Ловит читы из памяти, которых нет на диске: инъекции DLL, неподписанные модули, процессы из пользовательских папок." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="640" Margin="0,8,0,0" />
+              </StackPanel>
+              <Button Style="{StaticResource PrimaryBtn}" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="18,0" Click="StartProcScan_Click">
+                <TextBlock Name="BtnText_Proc" Text="Сканировать" VerticalAlignment="Center" />
+              </Button>
+            </Grid>
+            <Border Name="ProcSummary" Grid.Row="1" Visibility="Collapsed" Margin="0,0,0,14" CornerRadius="12" Padding="18,14" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                  <TextBlock Name="ProcSummaryTitle" FontFamily="{StaticResource Font_Sans}" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                  <TextBlock Name="ProcSummarySub" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Faint}" Margin="0,6,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Name="ProcSummaryNum" Text="0" FontFamily="{StaticResource Font_Sans}" FontSize="30" FontWeight="Bold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Right" />
+                  <TextBlock Text="НАХОДОК" FontFamily="{StaticResource Font_Mono}" FontSize="9" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Right" Margin="0,4,0,0" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Grid Row="2">
+              <Border CornerRadius="12" ClipToBounds="True" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                <DataGrid Name="ProcGrid" Style="{StaticResource DarkDataGrid}" HorizontalScrollBarVisibility="Auto" MouseDoubleClick="ProcGrid_DoubleClick">
+                  <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="4" MinWidth="0" CanUserResize="False" CanUserReorder="False" CanUserSort="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{Binding RowBar}" />
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Grid />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="PCol_Name" Header="ПРОЦЕСС / МОДУЛЬ" Width="200" Binding="{Binding Name}" />
+                    <DataGridTextColumn x:Name="PCol_Pid" Header="PID" Width="70" Binding="{Binding Pid}" />
+                    <DataGridTextColumn x:Name="PCol_Path" Header="ПУТЬ" Width="*" Binding="{Binding Path}" />
+                    <DataGridTextColumn x:Name="PCol_Note" Header="ЗАМЕЧАНИЕ" Width="240" Binding="{Binding Note}" />
+                    <DataGridTemplateColumn x:Name="PCol_Risk" Header="РИСК" Width="120" CanUserSort="False">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Border CornerRadius="5" Padding="9,3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{Binding TagFill}">
+                            <TextBlock FontFamily="{StaticResource Font_Mono}" FontSize="10" FontWeight="Medium" Text="{Binding TagText}" Foreground="{Binding TagBrush}" />
+                          </Border>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+              <Grid Name="ProcOverlay" Background="{StaticResource Brush_Panel}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="440">
+                  <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <Viewbox Width="24" Height="24">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M9,3 L15,3 L15,6 L18,6 A3,3 0 0 1 21,9L21,15 A3,3 0 0 1 18,18L6,18 A3,3 0 0 1 3,15L3,9 A3,3 0 0 1 6,6L9,6 M9,11 L15,11 M9,14 L13,14" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.4" StrokeLineJoin="Round" />
+                      </Canvas>
+                    </Viewbox>
+                  </Border>
+                  <TextBlock Name="ProcOverlayTitle" Text="Скан не запускался" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Нажмите «Сканировать», чтобы проверить запущенные процессы и модули, загруженные в cs2." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                </StackPanel>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid Name="Tab_System" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="0,0,0,18">
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                  <UIElement.Effect>
+                    <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                  </UIElement.Effect>
+                </Ellipse>
+                <TextBlock Text="СИСТЕМА · ДРУГОЕ" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="Другое" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+              <TextBlock Text="Сведения о железе и системе, быстрый доступ к системным приложениям и ручные проверки на макросы и эмуляцию нажатий." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="640" Margin="0,8,0,0" />
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="24" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" VerticalAlignment="Top" CornerRadius="12" Padding="18,4" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                  <StackPanel>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M2,4 L22,4 L22,17 L2,17 M8,21 L16,21" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysScreens" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" />
+                            <Path Data="M12,7 L12,12 L15,14" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeStartLineCap="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysUptime" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,3 L11,3 L11,11 L3,11 M13,3 L21,3 L21,11 L13,11 M3,13 L11,13 L11,21 L3,21 M13,13 L21,13 L21,21 L13,21" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysWindows" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,4 L21,4 L21,20 L3,20 M8,2 L8,6 M16,2 L16,6 M3,10 L21,10" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysInstallDate" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M4,6 L20,6 L20,18 L4,18 M8,6 L8,18" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysRam" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M6,6 L18,6 L18,18 L6,18 M9,2 L9,5 M15,2 L15,5 M9,19 L9,22 M15,19 L15,22 M2,9 L5,9 M2,15 L5,15 M19,9 L22,9 M19,15 L22,15" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysCpu" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M2,7 L22,7 L22,17 L2,17 M13,12 L18,12" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                            <Ellipse Canvas.Left="6" Canvas.Top="10" Width="4" Height="4" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysGpu" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#8C242427" Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,3 L21,3 L21,21 L3,21 M7,7 L11,7 L11,11 L7,11 M15,7 L17,7 M15,11 L17,11 M7,15 L17,15" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysMotherboard" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                    <Border Padding="0,8">
+                      <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="15" Height="15" Margin="0,0,12,0">
+                          <Canvas Width="24" Height="24">
+                            <Path Data="M3,4 L21,4 L21,18 L3,18 M2,20 L22,20" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.6" StrokeLineJoin="Round" />
+                          </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="SysVm" FontSize="12.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Border>
+                  </StackPanel>
+                </Border>
+                <StackPanel Grid.Column="2">
+                  <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_SystemApps" Grid.Column="0" Text="Системные приложения" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                  </Grid>
+                  <Button Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="0,0,0,9" Click="OpenDataUsage_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                          <Path Data="M12,3 A9,9 0 0 1 12,21M12,12 L19,8" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_DataUsage" Text="Использование данных" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <Button Style="{StaticResource NvidiaBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="0,0,0,9" Click="OpenNvidia_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M2,7 L22,7 L22,17 L2,17" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                          <Ellipse Canvas.Left="6" Canvas.Top="10" Width="4" Height="4" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_Nvidia" Text="Панель управления NVIDIA" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <Button Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Click="OpenServices_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Ellipse Canvas.Left="9" Canvas.Top="9" Width="6" Height="6" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                          <Path Data="M12,3 L12,6 M12,18 L12,21 M3,12 L6,12 M18,12 L21,12" StrokeThickness="1.6" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_Services" Text="Службы Windows" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <Grid Margin="0,22,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_Macros" Grid.Column="0" Text="Проверка на макросы" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                  </Grid>
+                  <Button Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="0,0,0,4" Click="DetectMouse_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M6,3 L18,11 L13,12 L16,18 L14,19 L11,13 L8,17" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_MouseApp" Text="Программа управления мышью" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <TextBlock Name="CatText_MacrosSubtitle" Text="Ручная и автоматическая проверка" FontSize="11" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                  <Button Style="{StaticResource DangerBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Click="CheckMacros_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                          <Ellipse Canvas.Left="9" Canvas.Top="9" Width="6" Height="6" StrokeThickness="1.6" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_MacroCheck" Text="Проверка на запущенный макрос" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <Grid Margin="0,22,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="CatText_KeyEmulation" Grid.Column="0" Text="Эмуляция клавиш в игре" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+                    <Border Grid.Column="1" Height="1" Margin="11,0,0,0" VerticalAlignment="Center" Background="{StaticResource Brush_Line}" />
+                  </Grid>
+                  <Button Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="0,0,0,4" Click="AutoDetect_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M3,4 L21,4 L21,17 L3,17 M8,21 L16,21" StrokeThickness="1.6" StrokeLineJoin="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_AutoCheck" Text="Автоматическая проверка в игре" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <TextBlock Name="GameStatusText" Text="Процесс игры: игра не запущена" FontSize="11" Foreground="{StaticResource Brush_Faint}" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                  <Button Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Click="OpenKeyboard_Click">
+                    <StackPanel Orientation="Horizontal">
+                      <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M2,6 L22,6 L22,18 L2,18 M6,10 L6.01,10 M10,10 L10.01,10 M14,10 L14.01,10 M18,10 L18.01,10 M8,14 L16,14" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                        </Canvas>
+                      </Viewbox>
+                      <TextBlock Name="BtnText_Keyboard" Text="Открыть экранную клавиатуру" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </ScrollViewer>
+          </Grid>
+          <Grid Name="Tab_Renames" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="0,0,0,18">
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                  <UIElement.Effect>
+                    <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                  </UIElement.Effect>
+                </Ellipse>
+                <TextBlock Text="ДОПОЛНИТЕЛЬНО · NTFS" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="Переименованные файлы" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+              <TextBlock Text="Из журнала NTFS (USN): что во что было переименовано, когда и есть ли файл на ПК сейчас. Помогает найти чит, спрятанный под другим именем. Нужны права администратора." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="720" Margin="0,8,0,0" />
+            </StackPanel>
+            <Grid Row="1">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                <Button Name="BtnRenames" Style="{StaticResource GhostBtn}" HorizontalContentAlignment="Left" Click="LoadRenames_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,10,0">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M4,7 L15,7 L12,4 M20,17 L9,17 L12,20" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="Показать переименования" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+                <Border Margin="12,0,0,0" Width="300" CornerRadius="9" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                  <TextBox Name="RenamesSearch" Style="{StaticResource SearchBox}" BorderThickness="0" Background="#00FFFFFF" Padding="12,0" VerticalContentAlignment="Center" TextChanged="RenamesSearch_Changed" />
+                </Border>
+                <CheckBox Name="RenamesNoise" Content="показать системный мусор" VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{StaticResource Brush_Dim}" FontSize="12" Checked="RenamesNoise_Changed" Unchecked="RenamesNoise_Changed" />
+                <TextBlock Name="RenamesStatus" VerticalAlignment="Center" Margin="14,0,0,0" FontFamily="{StaticResource Font_Mono}" FontSize="11" Foreground="{StaticResource Brush_Faint}" />
+              </StackPanel>
+              <Border Name="RenamesBox" Grid.Row="1" Visibility="Collapsed" CornerRadius="12" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}" ClipToBounds="True">
+                <DataGrid Name="RenamesGrid" Style="{StaticResource DarkDataGrid}" HorizontalScrollBarVisibility="Auto" MouseDoubleClick="RenamesGrid_DoubleClick">
+                  <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="" Width="34" CanUserSort="False" CanUserResize="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{TemplateBinding Control.Background}">
+                                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Image Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True" Source="{Binding Icon}" />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="СТАРОЕ ИМЯ" Width="220" Binding="{Binding OldName}" />
+                    <DataGridTextColumn Header="НОВОЕ ИМЯ" Width="220" Binding="{Binding NewName}" />
+                    <DataGridTextColumn Header="КОГДА" SortMemberPath="WhenRaw" Width="150" Binding="{Binding When}" />
+                    <DataGridTextColumn Header="ФАЙЛ" Width="80" Binding="{Binding OnDisk}" />
+                    <DataGridTextColumn Header="ТЕКУЩИЙ ПУТЬ" Width="*" Binding="{Binding CurrentPath}" />
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+            </Grid>
+          </Grid>
+          <Grid Name="Tab_USB" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,18">
+              <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ЭТАП 02 · USB" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="USB-устройства" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="История подключений из реестра Windows — включая отключённые сейчас устройства. Отдельно помечено то, что подключали во время игровой сессии." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Name="StartUsbBtn" Style="{StaticResource PrimaryBtn}" Click="StartUSB_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Ellipse Canvas.Left="10" Canvas.Top="17" Width="4" Height="4" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" />
+                        <Path Data="M12,17 L12,5 M8,9 L12,5 L16,9" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_LoadUSB" Text="Загрузить историю" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+              </StackPanel>
+            </Grid>
+            <Grid Row="1">
+              <Border CornerRadius="12" ClipToBounds="True" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                <UIElement.Effect>
+                  <BlurEffect x:Name="UsbBlur" Radius="0" />
+                </UIElement.Effect>
+                <DataGrid Name="UsbGrid" Style="{StaticResource DarkDataGrid}" HorizontalScrollBarVisibility="Auto">
+                  <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="4" MinWidth="0" CanUserResize="False" CanUserReorder="False" CanUserSort="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{Binding RowBar}" />
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Grid />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="UCol_Device" Header="УСТРОЙСТВО" Width="220" Binding="{Binding Device_name}" />
+                    <DataGridTextColumn x:Name="UCol_Type" Header="ТИП" Width="120" Binding="{Binding Description}" />
+                    <DataGridTextColumn x:Name="UCol_Letter" Header="ДИСК" Width="70" Binding="{Binding DriverLetter}" />
+                    <DataGridTextColumn x:Name="UCol_Conn" Header="ПЕРВОЕ ПОДКЛ." Width="150" Binding="{Binding Created_date}" />
+                    <DataGridTextColumn x:Name="UCol_Disc" Header="ПОСЛЕДНЕЕ" Width="150" Binding="{Binding Last_plug_unplug_date}" />
+                    <DataGridTextColumn Header="VID:PID" Width="*" Binding="{Binding Vendorid}" />
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+              <Grid Name="UsbOverlay" Background="{StaticResource Brush_Panel}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="420">
+                  <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <Viewbox Width="24" Height="24">
+                      <Canvas Width="24" Height="24">
+                        <Ellipse Canvas.Left="10" Canvas.Top="17" Width="4" Height="4" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" />
+                        <Path Data="M12,17 L12,5 M8,9 L12,5 L16,9" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                      </Canvas>
+                    </Viewbox>
+                  </Border>
+                  <TextBlock Text="История подключений не загружена" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Windows хранит следы каждой флешки, мыши и клавиатуры, которые когда-либо подключали к этому компьютеру." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                  <StackPanel Name="UsbProgressPanel" Visibility="Collapsed" Width="300" Margin="0,16,0,0">
+                    <TextBlock Name="UsbStatus" Text="Загрузка..." HorizontalAlignment="Center" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Brand}" FontSize="11" Margin="0,0,0,6" />
+                    <ProgressBar Height="4" IsIndeterminate="True" Foreground="{StaticResource Brush_Brand}" Background="{StaticResource Brush_Panel2}" BorderThickness="0" />
+                  </StackPanel>
+                  <Border HorizontalAlignment="Center" Margin="0,16,0,0" CornerRadius="7" Padding="12,7" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <TextBlock Text="ОЧИСТКА ЭТИХ ЗАПИСЕЙ СЧИТАЕТСЯ НАРУШЕНИЕМ" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" />
+                  </Border>
+                </StackPanel>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid Name="Tab_LastActivity" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,18">
+              <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ЭТАП 03 · АКТИВНОСТЬ" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="Последняя активность" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Файлы, к которым обращались за последнее время: запуски, открытия, распаковка архивов. Фильтруется по расширениям и своему выражению." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Style="{StaticResource GhostBtn}" Margin="0,0,9,0" Click="ResetActivityFilter_Click">
+                  <TextBlock Name="BtnText_ResetOverlay" Text="Сброс" VerticalAlignment="Center" />
+                </Button>
+                <Button Style="{StaticResource PrimaryBtn}" Click="StartLastActivity_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" />
+                        <Path Data="M12,7 L12,12 L15,14" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_LoadOverlay" Text="Загрузить активность" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+              </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
+              <CheckBox Name="FilterExe" Style="{StaticResource DarkCheckBox}" Content=".exe" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Margin="0,0,16,0" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterRar" Style="{StaticResource DarkCheckBox}" Content=".rar" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Margin="0,0,16,0" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterZip" Style="{StaticResource DarkCheckBox}" Content=".zip" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Margin="0,0,16,0" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterAhk" Style="{StaticResource DarkCheckBox}" Content=".ahk" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Margin="0,0,16,0" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterCs2" Style="{StaticResource DarkCheckBox}" Content="cs2" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Margin="0,0,16,0" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="ActivityRegex" Style="{StaticResource DarkCheckBox}" Content="Regex" FontFamily="{StaticResource Font_Mono}" FontSize="11.5" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+            </StackPanel>
+            <Border Grid.Row="2" Margin="0,0,0,16" CornerRadius="10" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+              <Grid>
+                <Viewbox Width="14" Height="14" HorizontalAlignment="Left" Margin="12,0,0,0">
+                  <Canvas Width="24" Height="24">
+                    <Ellipse Canvas.Left="4" Canvas.Top="4" Width="14" Height="14" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.7" />
+                    <Path Data="M20,20 L16.4,16.4" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.7" StrokeStartLineCap="Round" />
+                  </Canvas>
+                </Viewbox>
+                <TextBox Name="ActivitySearch" Style="{StaticResource SearchBox}" BorderThickness="0" Background="#00FFFFFF" Padding="34,0,12,0" TextChanged="ActivitySearch_Changed" />
+              </Grid>
+            </Border>
+            <Grid Row="3">
+              <Border CornerRadius="12" ClipToBounds="True" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                <UIElement.Effect>
+                  <BlurEffect x:Name="ActivityBlur" Radius="0" />
+                </UIElement.Effect>
+                <DataGrid Name="ActivityGrid" Style="{StaticResource DarkDataGrid}" MouseDoubleClick="ActivityGrid_DoubleClick">
+                  <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="4" MinWidth="0" CanUserResize="False" CanUserReorder="False" CanUserSort="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{Binding RowBar}" />
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Grid />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="" Width="34" CanUserSort="False" CanUserResize="False">
+                      <DataGridColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                          <Setter Property="BorderThickness" Value="0" />
+                          <Setter Property="Padding" Value="0" />
+                          <Setter Property="Template">
+                            <Setter.Value>
+                              <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{TemplateBinding Control.Background}">
+                                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                              </ControlTemplate>
+                            </Setter.Value>
+                          </Setter>
+                        </Style>
+                      </DataGridColumn.CellStyle>
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Image Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True" Source="{Binding Icon}" />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="ACol_Name" Header="ИМЯ ФАЙЛА" Width="240" Binding="{Binding Name}" />
+                    <DataGridTextColumn x:Name="ACol_Path" Header="ПУТЬ" Width="*" Binding="{Binding Path}" />
+                    <DataGridTextColumn x:Name="ACol_Disk" Header="ФАЙЛ" Width="90" Binding="{Binding OnDisk}" />
+                    <DataGridTextColumn x:Name="ACol_Date" Header="ДАТА" Width="160" Binding="{Binding Date}" />
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+              <Grid Name="ActivityOverlay" Background="{StaticResource Brush_Panel}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="440">
+                  <StackPanel Name="ActivityControls">
+                    <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                      <Viewbox Width="24" Height="24">
+                        <Canvas Width="24" Height="24">
+                          <Ellipse Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" />
+                          <Path Data="M12,7 L12,12 L15,14" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                        </Canvas>
+                      </Viewbox>
+                    </Border>
+                    <TextBlock Text="Активность не загружена" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Отметьте нужные расширения и нажмите «Загрузить активность». Regex позволяет задать своё выражение в поле поиска." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                    <Border HorizontalAlignment="Center" Margin="0,16,0,0" CornerRadius="7" Padding="12,7" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                      <TextBlock Text="ИСТОЧНИК: PREFETCH · JUMPLISTS · RECENT" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" />
+                    </Border>
+                  </StackPanel>
+                  <StackPanel Name="ActivityProgressPanel" Visibility="Collapsed" Width="300">
+                    <TextBlock Name="ActivityStatus" Text="Загрузка активности..." HorizontalAlignment="Center" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Brand}" FontSize="11" Margin="0,0,0,8" />
+                    <ProgressBar Height="4" IsIndeterminate="True" Foreground="{StaticResource Brush_Brand}" Background="{StaticResource Brush_Panel2}" BorderThickness="0" />
+                  </StackPanel>
+                </StackPanel>
+              </Grid>
+            </Grid>
+            <StackPanel Name="ActivityToolbar" Grid.Row="0" Visibility="Collapsed" Height="0">
+              <TextBlock Name="BtnText_LoadToolbar" Text="Загрузить" />
+              <TextBlock Name="BtnText_ResetToolbar" Text="Сброс" />
+              <CheckBox Name="FilterExe2" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterRar2" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterZip2" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterAhk2" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="FilterCs22" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <CheckBox Name="ActivityRegex2" Checked="ActivityFilter_Changed" Unchecked="ActivityFilter_Changed" />
+              <TextBox Name="ActivitySearch2" TextChanged="ActivitySearch_Changed" />
+            </StackPanel>
+          </Grid>
+          <Grid Name="Tab_Registry" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="0,0,0,18">
+              <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                  <Ellipse Width="6" Height="6" Fill="{StaticResource Brush_Brand}" VerticalAlignment="Center" Margin="0,0,9,0">
+                    <UIElement.Effect>
+                      <DropShadowEffect Color="{DynamicResource Clr_Brand}" BlurRadius="8" ShadowDepth="0" />
+                    </UIElement.Effect>
+                  </Ellipse>
+                  <TextBlock Text="ЭТАП 05 · РЕЕСТР" FontFamily="{StaticResource Font_Mono}" FontSize="10" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="Реестр ПК" FontFamily="{StaticResource Font_Sans}" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                <TextBlock Text="Приложения, которые запускались на этом ПК, включая удалённые. Следы остаются в системе даже после удаления программы." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left" Margin="0,8,0,0" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Name="StartRegistryBtn" Style="{StaticResource PrimaryBtn}" Click="StartRegistry_Click">
+                  <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="15" Height="15" Margin="0,0,8,0">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M3,5 L21,5 L21,11 L3,11 M3,13 L21,13 L21,19 L3,19 M7,8 L7.01,8 M7,16 L7.01,16" Stroke="{DynamicResource Brush_BrandText}" StrokeThickness="1.6" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                    <TextBlock Name="BtnText_StartAnalysis" Text="Начать анализ" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Button>
+              </StackPanel>
+            </Grid>
+            <Grid Row="1">
+              <Border CornerRadius="12" ClipToBounds="True" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line}">
+                <UIElement.Effect>
+                  <BlurEffect x:Name="RegistryBlur" Radius="0" />
+                </UIElement.Effect>
+                <DataGrid Name="RegistryGrid" Style="{StaticResource DarkDataGrid}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="RCol_App" Header="ПРИЛОЖЕНИЕ" Width="320" Binding="{Binding Name}" />
+                    <DataGridTextColumn x:Name="RCol_Path" Header="ПУТЬ" Width="*" Binding="{Binding Path}" />
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+              <Grid Name="RegistryOverlay" Background="{StaticResource Brush_Panel}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="420">
+                  <Border Width="54" Height="54" CornerRadius="14" HorizontalAlignment="Center" Margin="0,0,0,10" Background="{StaticResource Brush_Panel2}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+                    <Viewbox Width="24" Height="24">
+                      <Canvas Width="24" Height="24">
+                        <Path Data="M3,5 L21,5 L21,11 L3,11 M3,13 L21,13 L21,19 L3,19 M7,8 L7.01,8 M7,16 L7.01,16" Stroke="{StaticResource Brush_Faint}" StrokeThickness="1.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                      </Canvas>
+                    </Viewbox>
+                  </Border>
+                  <TextBlock Text="Реестр не загружен" FontFamily="{StaticResource Font_Sans}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Нажмите «Начать анализ» — программа соберёт список приложений, запускавшихся на этом ПК." Foreground="{StaticResource Brush_Dim}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                  <StackPanel Name="RegistryProgressPanel" Visibility="Collapsed" Width="300" Margin="0,16,0,0">
+                    <TextBlock Name="RegistryStatus" Text="Загрузка..." HorizontalAlignment="Center" FontFamily="{StaticResource Font_Mono}" Foreground="{StaticResource Brush_Brand}" FontSize="11" Margin="0,0,0,6" />
+                    <ProgressBar Height="4" IsIndeterminate="True" Foreground="{StaticResource Brush_Brand}" Background="{StaticResource Brush_Panel2}" BorderThickness="0" />
+                  </StackPanel>
+                </StackPanel>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Border Name="NotificationsPanel" Grid.Row="1" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Top" Width="320" MaxHeight="440" Margin="0,2,10,0" CornerRadius="12" Padding="0" Background="{StaticResource Brush_Panel}" BorderThickness="1" BorderBrush="{StaticResource Brush_Line2}">
+          <UIElement.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="30" ShadowDepth="8" Opacity="0.6" />
+          </UIElement.Effect>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Brush_Line}" Padding="15,13">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Name="NotifText_Title" Grid.Column="0" Text="Уведомления" FontFamily="{StaticResource Font_Sans}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Style="{StaticResource WindowIconButton}" Width="26" Height="26" Click="CloseNotifications_Click">
+                  <Viewbox Width="14" Height="14">
+                    <Canvas Width="24" Height="24">
+                      <Path Data="M6,6 L18,18 M18,6 L6,18" StrokeThickness="1.7" StrokeStartLineCap="Round" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                    </Canvas>
+                  </Viewbox>
+                </Button>
+              </Grid>
+            </Border>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+              <StackPanel>
+                <Grid Name="NothingDetectedText" Visibility="Collapsed" Margin="15,14">
+                  <StackPanel Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="8" Margin="0,0,12,0" Background="{StaticResource Brush_MintFill}" BorderThickness="1" BorderBrush="#4D34D399">
+                      <Viewbox Width="17" Height="17">
+                        <Canvas Width="24" Height="24">
+                          <Path Data="M12,3 L20,6 L20,12 C20,17 16.5,20 12,21 C7.5,20 4,17 4,12 L4,6 M9,12 L11,14 L15,10" Stroke="{StaticResource Brush_Mint}" StrokeThickness="1.7" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                        </Canvas>
+                      </Viewbox>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                      <TextBlock Text="Ничего не обнаружено" FontSize="12.5" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" />
+                      <TextBlock Text="Фоновая проверка завершена." FontSize="11.5" Foreground="{StaticResource Brush_Dim}" Margin="0,3,0,0" />
+                    </StackPanel>
+                  </StackPanel>
+                </Grid>
+                <ItemsControl Name="AutoDetectList">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border BorderThickness="0,0,0,1" BorderBrush="#B3242427" Padding="15,13">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                          </Grid.ColumnDefinitions>
+                          <Border Grid.Column="0" Width="32" Height="32" CornerRadius="8" Margin="0,0,12,0" VerticalAlignment="Top" Background="{StaticResource Brush_AmberFill}" BorderThickness="1" BorderBrush="#4DF0A93C">
+                            <Viewbox Width="17" Height="17">
+                              <Canvas Width="24" Height="24">
+                                <Path Data="M12,3 L3,20 L21,20 M12,10 L12,14 M12,17 L12.01,17" Stroke="{StaticResource Brush_Amber}" StrokeThickness="1.7" StrokeLineJoin="Round" StrokeStartLineCap="Round" />
+                              </Canvas>
+                            </Viewbox>
+                          </Border>
+                          <StackPanel Grid.Column="1">
+                            <TextBlock FontSize="12.5" FontWeight="SemiBold" Foreground="{StaticResource Brush_Text}" Text="{Binding Title}" />
+                            <TextBlock FontSize="11.5" TextWrapping="Wrap" Foreground="{StaticResource Brush_Dim}" Margin="0,3,0,0" Text="{Binding Text}" />
+                            <Button Style="{StaticResource PrimaryBtn}" Height="30" Margin="0,9,0,0" HorizontalAlignment="Left" Padding="14,0" Content="{Binding ActionLabel}" Tag="{Binding Id}" Visibility="{Binding ActionVisibility}" Click="AutoDetectAction_Click" />
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </ScrollViewer>
+          </Grid>
+        </Border>
+        <Border Grid.Row="2" Background="{StaticResource Brush_Rail}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Brush_Line}">
+          <Grid Margin="20,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+              <TextBlock Text="CID" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+              <TextBlock Name="FooterCid" Margin="8,0,0,0" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Dim}" VerticalAlignment="Center" />
+              <Border Width="6" Height="11" Margin="6,0,0,0" Background="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+              <Ellipse Width="5" Height="5" Fill="{StaticResource Brush_Mint}" VerticalAlignment="Center" Margin="0,0,7,0" />
+              <TextBlock Text="СВЯЗЬ С СЕРВЕРОМ" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Mint}" VerticalAlignment="Center" Margin="0,0,16,0" />
+              <TextBlock Name="LinkWebsite" Cursor="Hand" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Dim}" Visibility="Collapsed" VerticalAlignment="Center" Margin="0,0,16,0" MouseLeftButtonDown="LinkWebsite_Click" />
+              <TextBlock Name="LinkDiscord" Cursor="Hand" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Dim}" Visibility="Collapsed" VerticalAlignment="Center" Margin="0,0,16,0" MouseLeftButtonDown="LinkDiscord_Click" />
+              <TextBlock Name="LinkVK" Cursor="Hand" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Dim}" Visibility="Collapsed" VerticalAlignment="Center" Margin="0,0,16,0" MouseLeftButtonDown="LinkVK_Click" />
+              <TextBlock Name="FooterVersion" FontFamily="{StaticResource Font_Mono}" FontSize="10.5" Foreground="{StaticResource Brush_Faint}" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>
